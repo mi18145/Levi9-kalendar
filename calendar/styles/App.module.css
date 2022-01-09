@@ -1,0 +1,6 @@
+.center {
+  display: flex;
+  justify-content: center;
+  padding-left: 15%;
+  padding-right: 15%;
+}

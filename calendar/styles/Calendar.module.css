@@ -27,9 +27,11 @@
 
 .tr {
   width: 10%;
+  height: 120px;
   border: 2px solid;
 }
 
 .td {
+  height: 50px;
   width: 10%;
 }

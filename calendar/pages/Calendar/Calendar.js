@@ -54,7 +54,7 @@ export default function Calendar() {
             monthNames[selectedDate.getMonth()]
           } - ${selectedDate.getFullYear()}`}
         </h2>
-        <table className="ui grey inverted celled padded striped table">
+        <table className="ui grey inverted celled very compact table">
           <thead>
             <tr>
               {daysShort.map((day) => (
@@ -62,10 +62,10 @@ export default function Calendar() {
               ))}
             </tr>
           </thead>
-          <tbody className="ui grey inverted celled padded striped table">
+          <tbody className="ui grey inverted celled very compact table">
             {Object.values(calendarRows).map((cols) => {
               return (
-                <tr key={cols[0].date} className={styles.tr}>
+                <tr key={cols[0].date} className={styles.tr + " top aligned"}>
                   {cols.map((col) =>
                     col.date === todayFormatted ? (
                       <td
@@ -77,11 +77,17 @@ export default function Calendar() {
                           setDate(col.date);
                         }}
                       >
-                        <div>{col.value}</div>
-                        <div>
-                          {checkForEvents(col.date).map((ev) => {
-                            return <p>{ev}</p>;
-                          })}
+                        <div className="ui inverted grey clearing segment">
+                          <div>
+                            <h5 className="ui inverted dividing header">
+                              {col.value}
+                            </h5>
+                          </div>
+                          <div>
+                            {checkForEvents(col.date).map((ev) => {
+                              return <p className={styles.p}>{ev}</p>;
+                            })}
+                          </div>
                         </div>
                       </td>
                     ) : (
@@ -94,11 +100,17 @@ export default function Calendar() {
                           setDate(col.date);
                         }}
                       >
-                        <div>{col.value}</div>
-                        <div>
-                          {checkForEvents(col.date).map((ev) => {
-                            return <p>{ev}</p>;
-                          })}
+                        <div className="ui inverted grey clearing segment">
+                          <div>
+                            <h5 className="ui inverted dividing header">
+                              {col.value}
+                            </h5>
+                          </div>
+                          <div>
+                            {checkForEvents(col.date).map((ev) => {
+                              return <p className={styles.p}>{ev}</p>;
+                            })}
+                          </div>
                         </div>
                       </td>
                     )

@@ -1,11 +1,54 @@
-import { React, useState } from "react";
+import { React, useState, useEffect } from "react";
 import "semantic-ui-css/semantic.min.css";
 import styles from "../../styles/Form.module.css";
+import { MultiSelect } from "react-multi-select-component";
 
 export default function Form(props) {
   if (!props.show) {
     return null;
   }
+
+  const [participants, setParticipants] = useState([]);
+  const [selected, setSelected] = useState([]);
+
+  useEffect(() => {
+    async function getParticipants() {
+      const res = await fetch("/participants");
+      const data = await res.json();
+      setParticipants(data.map((u) => ({ label: u.name, value: u.id })));
+    }
+    getParticipants();
+  }, []);
+
+  const addEvent = async (event) => {
+    event.preventDefault();
+
+    const title = event.target.title.value;
+    const description = event.target.description.value;
+    const time = event.target.time.value;
+    const participants = selected.map((x) => x.value);
+    console.log(selected);
+    const res = await fetch("/event", {
+      body: JSON.stringify({
+        title,
+        description,
+        time,
+        participants,
+        day,
+        month,
+        year,
+      }),
+      headers: {
+        "Content-Type": "application/json",
+      },
+      method: "POST",
+    });
+
+    const result = await res.json();
+    console.log(result);
+    onSuccess(result);
+  };
+
   const [title, setTitle] = useState("");
   const [desc, setDesc] = useState("");
   const [time, setTime] = useState("");
@@ -17,14 +60,14 @@ export default function Form(props) {
             e.stopPropagation();
           }}
         >
-          <div className="ui center aligned container" className={styles.title}>
+          <div className={styles.title}>
             <h1>Add new event</h1>
           </div>
           <div className={styles.form}>
-            <form className="ui inverted form">
+            <form className="ui form">
               <br />
-              <div className="field">
-                <label>Title: </label>
+              <div>
+                <label className={styles.label}>Title: </label>
                 <input
                   type="text"
                   placeholder="Type title here..."
@@ -34,8 +77,8 @@ export default function Form(props) {
                 />
               </div>
               <br />
-              <div className="field">
-                <label>Description: </label>
+              <div>
+                <label className={styles.label}>Description: </label>
                 <textarea
                   type="text"
                   placeholder="Type description here..."
@@ -45,8 +88,8 @@ export default function Form(props) {
                 ></textarea>
               </div>
               <br />
-              <div className="field">
-                <label>Time: </label>
+              <div>
+                <label className={styles.label}>Time: </label>
                 <input
                   type="text"
                   placeholder={props.date}
@@ -57,13 +100,13 @@ export default function Form(props) {
               </div>
               <br />
               <div>
-                <label>Choose participants: </label>
-                {/* <MultiSelect
-                  options={ucesnici}
+                <label className={styles.label}>Choose participants: </label>
+                <MultiSelect
+                  options={participants}
                   value={selected}
                   onChange={setSelected}
                   labelledBy="Select"
-                /> */}
+                />
               </div>
               <br />
               <div className="ui right aligned container">
@@ -74,12 +117,7 @@ export default function Form(props) {
                 >
                   Add event
                 </button>
-                <button
-                  onClick={() => {
-                    props.onClose;
-                  }}
-                  className="ui button"
-                >
+                <button onClick={props.onClose} className="ui button">
                   Close
                 </button>
               </div>

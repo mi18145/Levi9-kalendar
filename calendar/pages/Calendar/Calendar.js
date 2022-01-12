@@ -1,4 +1,4 @@
-import { React, Fragment, useState } from "react";
+import { React, Fragment, useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import Form from "../Form";
 import "semantic-ui-css/semantic.min.css";
@@ -22,6 +22,27 @@ export default function Calendar() {
 
   const [show, setShow] = useState(false);
   const [date, setDate] = useState("1");
+  const [events, setEvents] = useState([]);
+
+  useEffect(() => {
+    async function getEvents() {
+      const res = await fetch("/events");
+      const data = await res.json();
+      console.log(data);
+      setEvents([...data]);
+    }
+    getEvents();
+  }, []);
+
+  const checkForEvents = (date) => {
+    const event_list = [];
+    for (let ev of events) {
+      if (ev.date == date) {
+        event_list.push(ev.title);
+      }
+    }
+    return event_list;
+  };
 
   return (
     <>
@@ -56,7 +77,12 @@ export default function Calendar() {
                           setDate(col.date);
                         }}
                       >
-                        {col.value}
+                        <div>{col.value}</div>
+                        <div>
+                          {checkForEvents(col.date).map((ev) => {
+                            return <p>{ev}</p>;
+                          })}
+                        </div>
                       </td>
                     ) : (
                       <td
@@ -68,7 +94,12 @@ export default function Calendar() {
                           setDate(col.date);
                         }}
                       >
-                        {col.value}
+                        <div>{col.value}</div>
+                        <div>
+                          {checkForEvents(col.date).map((ev) => {
+                            return <p>{ev}</p>;
+                          })}
+                        </div>
                       </td>
                     )
                   )}

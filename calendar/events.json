@@ -4,33 +4,33 @@
       "id": 1,
       "title": "e1",
       "description": "prvi dogadjaj",
-      "day": 2,
-      "month": 11,
-      "year": 2021
+      "time": "1pm",
+      "participants": [2],
+      "date": "12-1-2022"
     },
     {
       "id": 2,
       "title": "e2",
       "description": "drugi dogadjaj",
-      "day": 5,
-      "month": 11,
-      "year": 2021
+      "time": "1pm",
+      "participants": [2],
+      "date": "13-1-2022"
     },
     {
       "id": 3,
       "title": "e3",
       "description": "treci dogadjaj",
-      "day": 2,
-      "month": 11,
-      "year": 2021
+      "time": "1pm",
+      "participants": [2],
+      "date": "14-1-2022"
     },
     {
       "id": 4,
       "title": "e4",
       "description": "cetvrti dogadjaj",
-      "day": 21,
-      "month": 11,
-      "year": 2021
+      "time": "1pm",
+      "participants": [2],
+      "date": "12-1-2022"
     }
   ]
 }

@@ -1,5 +1,6 @@
 import { React, Fragment, useState, useEffect } from "react";
 import { useRouter } from "next/router";
+import Link from "next/link";
 import Form from "../Form";
 import "semantic-ui-css/semantic.min.css";
 import useCalendar from "../api/useCalendar";
@@ -17,18 +18,18 @@ export default function Calendar() {
   } = useCalendar();
 
   const dateClickHandler = (date) => {
-    console.log(date);
+    //console.log(date);
   };
 
   const [show, setShow] = useState(false);
   const [date, setDate] = useState("1");
   const [events, setEvents] = useState([]);
+  const router = useRouter();
 
   useEffect(() => {
     async function getEvents() {
-      const res = await fetch("/events");
+      const res = await fetch("/getEvents");
       const data = await res.json();
-      console.log(data);
       setEvents([...data]);
     }
     getEvents();
@@ -38,7 +39,7 @@ export default function Calendar() {
     const event_list = [];
     for (let ev of events) {
       if (ev.date == date) {
-        event_list.push(ev.title);
+        event_list.push(ev);
       }
     }
     return event_list;
@@ -68,47 +69,67 @@ export default function Calendar() {
                 <tr key={cols[0].date} className={styles.tr + " top aligned"}>
                   {cols.map((col) =>
                     col.date === todayFormatted ? (
-                      <td
-                        key={col.date}
-                        className={styles.td}
-                        onClick={() => {
-                          dateClickHandler(col.date);
-                          setShow(true);
-                          setDate(col.date);
-                        }}
-                      >
+                      <td key={col.date} className={styles.td}>
                         <div className="ui inverted grey clearing segment">
-                          <div>
+                          <div
+                            onClick={() => {
+                              dateClickHandler(col.date);
+                              setDate(col.date);
+                              setShow(true);
+                              console.log(date);
+                            }}
+                          >
                             <h5 className="ui inverted dividing header">
                               {col.value}
                             </h5>
                           </div>
                           <div>
-                            {checkForEvents(col.date).map((ev) => {
-                              return <p className={styles.p}>{ev}</p>;
-                            })}
+                            {Object.values(checkForEvents(col.date)).map(
+                              (ev) => {
+                                return (
+                                  <Link href={"/Events/${id}"}>
+                                    <p
+                                      onClick={() => router.push("/event")}
+                                      key={ev.title + ev.date + ev.time}
+                                      className={styles.p}
+                                    >
+                                      {ev.title + " - time: " + ev.time}
+                                    </p>
+                                  </Link>
+                                );
+                              }
+                            )}
                           </div>
                         </div>
                       </td>
                     ) : (
-                      <td
-                        key={col.date}
-                        className={styles.td}
-                        onClick={() => {
-                          dateClickHandler(col.date);
-                          setShow(true);
-                          setDate(col.date);
-                        }}
-                      >
+                      <td key={col.date} className={styles.td}>
                         <div className="ui inverted grey clearing segment">
-                          <div>
+                          <div
+                            onClick={() => {
+                              dateClickHandler(col.date);
+                              setDate(col.date);
+                              setShow(true);
+                              console.log(date);
+                            }}
+                          >
                             <h5 className="ui inverted dividing header">
                               {col.value}
                             </h5>
                           </div>
                           <div>
                             {checkForEvents(col.date).map((ev) => {
-                              return <p className={styles.p}>{ev}</p>;
+                              return (
+                                <Link href={"/Events/${id}"}>
+                                  <p
+                                    onClick={() => router.push("/Event")}
+                                    key={ev.title + ev.date + ev.time}
+                                    className={styles.p}
+                                  >
+                                    {ev.title + " - time: " + ev.time}
+                                  </p>
+                                </Link>
+                              );
                             })}
                           </div>
                         </div>

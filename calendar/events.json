@@ -1,60 +1,23 @@
-{
-  "Events": [
-    {
-      "id": 1,
-      "title": "e1",
-      "description": "prvi dogadjaj",
-      "time": "1pm",
-      "participants": [2],
-      "date": "12-1-2022"
-    },
-    {
-      "id": 2,
-      "title": "e2",
-      "description": "drugi dogadjaj",
-      "time": "1pm",
-      "participants": [2],
-      "date": "13-1-2022"
-    },
-    {
-      "id": 3,
-      "title": "e3",
-      "description": "treci dogadjaj",
-      "time": "1pm",
-      "participants": [2],
-      "date": "14-1-2022"
-    },
-    {
-      "id": 4,
-      "title": "e4",
-      "description": "cetvrti dogadjaj",
-      "time": "1pm",
-      "participants": [2],
-      "date": "12-1-2022"
-    },
-    {
-      "id": 5,
-      "title": "e5",
-      "description": "cetvrti dogadjaj",
-      "time": "1pm",
-      "participants": [2],
-      "date": "12-1-2022"
-    },
-    {
-      "id": 6,
-      "title": "e6",
-      "description": "cetvrti dogadjaj",
-      "time": "1pm",
-      "participants": [2],
-      "date": "12-1-2022"
-    },
-    {
-      "id": 7,
-      "title": "e7",
-      "description": "cetvrti dogadjaj",
-      "time": "1pm",
-      "participants": [2],
-      "date": "12-1-2022"
-    }
-  ]
-}
+[
+  {
+    "title": "Event 4",
+    "description": "Smara testiranje",
+    "date": "5-1-2022",
+    "time": "12:20pm",
+    "participants": [1, 2, 3, 4, 5, 6]
+  },
+  {
+    "title": "Event 5",
+    "description": "Neki bug se desava",
+    "date": "5-1-2022",
+    "time": "12:20pm",
+    "participants": [1, 2, 3, 4, 5, 6]
+  },
+  {
+    "title": "Event 6",
+    "description": "Nzm sto je bug",
+    "date": "5-1-2022",
+    "time": "12h",
+    "participants": [4]
+  }
+]

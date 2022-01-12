@@ -1,8 +1,9 @@
 const express = require("express");
 const next = require("next");
 const bodyparser = require("body-parser");
+const fs = require("fs");
 
-const dbEvents = require("./events.json").Events;
+const dbEvents = require("./events.json");
 
 const dbParticipants = require("./participants.json").Participants;
 
@@ -15,7 +16,7 @@ app.prepare().then(() => {
   const server = express();
   server.use(bodyparser.json());
 
-  server.get("/events", (req, res) => {
+  server.get("/getEvents", (req, res) => {
     res.send(
       dbEvents.filter(
         (event) =>
@@ -34,11 +35,10 @@ app.prepare().then(() => {
     else res.send(dbParticipants);
   });
 
-  server.post("/event", (req, res) => {
-    console.log(req.body);
+  server.post("/addEvent", (req, res) => {
     dbEvents.push(req.body);
-    console.log(dbEvents);
     res.json(req.body);
+    fs.writeFile("./events.json", JSON.stringify(dbEvents), "utf8");
   });
 
   server.all("*", (req, res) => {

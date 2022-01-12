@@ -21,22 +21,19 @@ export default function Form(props) {
   }, []);
 
   const addEvent = async (event) => {
-    event.preventDefault();
-
+    //event.preventDefault();
     const title = event.target.title.value;
     const description = event.target.description.value;
     const time = event.target.time.value;
     const participants = selected.map((x) => x.value);
-    console.log(selected);
-    const res = await fetch("/event", {
+    const date = props.date;
+    const res = await fetch("/addEvent", {
       body: JSON.stringify({
         title,
         description,
+        date,
         time,
         participants,
-        day,
-        month,
-        year,
       }),
       headers: {
         "Content-Type": "application/json",
@@ -45,8 +42,6 @@ export default function Form(props) {
     });
 
     const result = await res.json();
-    console.log(result);
-    onSuccess(result);
   };
 
   const [title, setTitle] = useState("");
@@ -64,7 +59,7 @@ export default function Form(props) {
             <h1>Add new event</h1>
           </div>
           <div className={styles.form}>
-            <form className="ui form">
+            <form className="ui form" onSubmit={addEvent}>
               <br />
               <div>
                 <label className={styles.label}>Title: </label>
@@ -110,11 +105,7 @@ export default function Form(props) {
               </div>
               <br />
               <div className="ui right aligned container">
-                <button
-                  type="submit"
-                  onClick={props.onClose}
-                  className="ui button"
-                >
+                <button type="submit" className="ui button">
                   Add event
                 </button>
                 <button onClick={props.onClose} className="ui button">

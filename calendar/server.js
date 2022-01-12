@@ -2,46 +2,9 @@ const express = require("express");
 const next = require("next");
 const bodyparser = require("body-parser");
 
-const dbEvents = [
-  {
-    id: 1,
-    title: "e1",
-    description: "prvi dogadjaj",
-    day: 2,
-    month: 11,
-    year: 2021,
-  },
-  {
-    id: 2,
-    title: "e2",
-    description: "drugi dogadjaj",
-    day: 5,
-    month: 11,
-    year: 2021,
-  },
-  {
-    id: 3,
-    title: "e3",
-    description: "treci dogadjaj",
-    day: 2,
-    month: 11,
-    year: 2021,
-  },
-  {
-    id: 4,
-    title: "e4",
-    description: "cetvrti dogadjaj",
-    day: 21,
-    month: 11,
-    year: 2021,
-  },
-];
+const dbEvents = require("./events.json").Events;
 
-const dbParticipants = [
-  { id: 1, name: "Pera" },
-  { id: 2, name: "Mika" },
-  { id: 3, name: "Zika" },
-];
+const dbParticipants = require("./participants.json").Participants;
 
 const port = parseInt(process.env.PORT, 10) || 3000;
 const dev = process.env.NODE_ENV !== "production";

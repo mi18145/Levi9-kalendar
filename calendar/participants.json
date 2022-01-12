@@ -1,0 +1,10 @@
+{
+  "Participants": [
+    { "id": 1, "name": "Pera" },
+    { "id": 2, "name": "Mika" },
+    { "id": 3, "name": "Zika" },
+    { "id": 4, "name": "Tanja" },
+    { "id": 5, "name": "Divna" },
+    { "id": 6, "name": "Baki" }
+  ]
+}

@@ -1,0 +1,22 @@
+.center {
+  position: fixed;
+  top: 0px;
+  bottom: 0px;
+  left: 0px;
+  right: 0px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: left;
+  background-color: rgba(0, 0, 0, 0.3);
+}
+
+.title {
+  padding-left: 10%;
+  color: white;
+}
+
+.form {
+  padding-left: 10%;
+  padding-right: 10%;
+}

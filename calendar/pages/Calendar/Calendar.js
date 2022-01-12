@@ -1,6 +1,7 @@
-import React, { Fragment } from "react";
+import { React, Fragment, useState } from "react";
+import { useRouter } from "next/router";
+import Form from "../Form";
 import "semantic-ui-css/semantic.min.css";
-
 import useCalendar from "../api/useCalendar";
 import styles from "../../styles/Calendar.module.css";
 
@@ -19,15 +20,19 @@ export default function Calendar() {
     console.log(date);
   };
 
+  const [show, setShow] = useState(false);
+  const [date, setDate] = useState("1");
+
   return (
-    <Fragment>
+    <>
       <div className="ui center aligned container">
-        <p>
+        <h2 className="ui grey header" className={styles.date}>
+          {" "}
           Selected Month:{" "}
           {`${
             monthNames[selectedDate.getMonth()]
           } - ${selectedDate.getFullYear()}`}
-        </p>
+        </h2>
         <table className="ui grey inverted celled padded striped table">
           <thead>
             <tr>
@@ -45,7 +50,11 @@ export default function Calendar() {
                       <td
                         key={col.date}
                         className={styles.td}
-                        onClick={() => dateClickHandler(col.date)}
+                        onClick={() => {
+                          dateClickHandler(col.date);
+                          setShow(true);
+                          setDate(col.date);
+                        }}
                       >
                         {col.value}
                       </td>
@@ -53,7 +62,11 @@ export default function Calendar() {
                       <td
                         key={col.date}
                         className={styles.td}
-                        onClick={() => dateClickHandler(col.date)}
+                        onClick={() => {
+                          dateClickHandler(col.date);
+                          setShow(true);
+                          setDate(col.date);
+                        }}
                       >
                         {col.value}
                       </td>
@@ -70,17 +83,20 @@ export default function Calendar() {
             onClick={getPrevMonth}
           >
             Prev
-            <i aria-hidden="true" class="left arrow icon"></i>
+            <i aria-hidden="true" className="left arrow icon"></i>
           </button>
           <button
             className="ui icon right labeled grey button"
             onClick={getNextMonth}
           >
-            <i aria-hidden="true" class="right arrow icon"></i>
+            <i aria-hidden="true" className="right arrow icon"></i>
             Next
           </button>
         </div>
       </div>
-    </Fragment>
+      <div className={styles.form}>
+        <Form show={show} date={date} onClose={() => setShow(false)} />
+      </div>
+    </>
   );
 }

@@ -77,7 +77,7 @@ export default function Calendar() {
                 <tr key={cols[0].date} className={styles.tr + " top aligned"}>
                   {cols.map((col) =>
                     col.date === todayFormatted ? (
-                      <td key={col.date} className={styles.td}>
+                      <td key={col.date} className={styles.today}>
                         <div
                           className={
                             "ui inverted grey segment" + styles.no_padding
@@ -104,7 +104,7 @@ export default function Calendar() {
                                     key={"p" + ev.id}
                                     className={styles.p}
                                   >
-                                    {ev.title + " - time: " + ev.time}
+                                    {ev.time + ": " + ev.title}
                                   </p>
                                 );
                               }
@@ -139,7 +139,7 @@ export default function Calendar() {
                                   key={"p" + ev.id}
                                   className={styles.p}
                                 >
-                                  {ev.title + " - time: " + ev.time}
+                                  {ev.time + ": " + ev.title}
                                 </p>
                               );
                             })}

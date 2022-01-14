@@ -17,12 +17,7 @@ app.prepare().then(() => {
   server.use(bodyparser.json());
 
   server.get("/getEvents", (req, res) => {
-    res.send(
-      dbEvents.filter(
-        (event) =>
-          event.month == req.query.month && event.year == req.query.year
-      )
-    );
+    res.send(dbEvents);
   });
 
   server.get("/getEvent/:id", (req, res) => {

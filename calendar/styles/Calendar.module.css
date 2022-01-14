@@ -28,6 +28,10 @@
   width: 10%;
 }
 
+.today {
+  background-color: rgb(143, 143, 143);
+}
+
 .date {
   padding-top: 10px;
 }

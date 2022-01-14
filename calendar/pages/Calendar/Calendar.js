@@ -18,11 +18,20 @@ export default function Calendar() {
   } = useCalendar();
 
   const dateClickHandler = (date) => {
+    setDate(date);
+    setShow(true);
+    setId(
+      events[events.length - 1].id == undefined
+        ? 1
+        : events[events.length - 1].id + 1
+    );
+    console.log(router.pathname);
     //console.log(date);
   };
 
   const [show, setShow] = useState(false);
   const [date, setDate] = useState("1");
+  const [id, setId] = useState(1);
   const [events, setEvents] = useState([]);
   const router = useRouter();
 
@@ -33,7 +42,7 @@ export default function Calendar() {
       setEvents([...data]);
     }
     getEvents();
-  }, []);
+  }, [show]);
 
   const checkForEvents = (date) => {
     const event_list = [];
@@ -70,14 +79,16 @@ export default function Calendar() {
                   {cols.map((col) =>
                     col.date === todayFormatted ? (
                       <td key={col.date} className={styles.td}>
-                        <div className="ui inverted grey clearing segment">
+                        <div
+                          className={
+                            "ui inverted grey segment" + styles.no_padding
+                          }
+                        >
                           <div
                             onClick={() => {
                               dateClickHandler(col.date);
-                              setDate(col.date);
-                              setShow(true);
-                              console.log(date);
                             }}
+                            className={styles.h_div}
                           >
                             <h5 className="ui inverted dividing header">
                               {col.value}
@@ -87,10 +98,10 @@ export default function Calendar() {
                             {Object.values(checkForEvents(col.date)).map(
                               (ev) => {
                                 return (
-                                  <Link href={"/Events/${id}"}>
+                                  <Link key={ev.id} href={`/Events/${ev.id}`}>
                                     <p
-                                      onClick={() => router.push("/event")}
-                                      key={ev.title + ev.date + ev.time}
+                                      onClick={() => router.push("/Events")}
+                                      key={"p" + ev.id}
                                       className={styles.p}
                                     >
                                       {ev.title + " - time: " + ev.time}
@@ -104,14 +115,16 @@ export default function Calendar() {
                       </td>
                     ) : (
                       <td key={col.date} className={styles.td}>
-                        <div className="ui inverted grey clearing segment">
+                        <div
+                          className={
+                            "ui inverted grey segment" + styles.no_padding
+                          }
+                        >
                           <div
                             onClick={() => {
                               dateClickHandler(col.date);
-                              setDate(col.date);
-                              setShow(true);
-                              console.log(date);
                             }}
+                            className={styles.h_div}
                           >
                             <h5 className="ui inverted dividing header">
                               {col.value}
@@ -120,10 +133,10 @@ export default function Calendar() {
                           <div>
                             {checkForEvents(col.date).map((ev) => {
                               return (
-                                <Link href={"/Events/${id}"}>
+                                <Link href={`/Events/${ev.id}`} key={ev.id}>
                                   <p
-                                    onClick={() => router.push("/Event")}
-                                    key={ev.title + ev.date + ev.time}
+                                    onClick={() => router.push("/Events")}
+                                    key={"p" + ev.id}
                                     className={styles.p}
                                   >
                                     {ev.title + " - time: " + ev.time}
@@ -159,7 +172,13 @@ export default function Calendar() {
         </div>
       </div>
       <div className={styles.form}>
-        <Form show={show} date={date} onClose={() => setShow(false)} />
+        <Form
+          show={show}
+          date={date}
+          id={id}
+          onClose={() => setShow(false)}
+          onSubmit={() => setShow(false)}
+        />
       </div>
     </>
   );

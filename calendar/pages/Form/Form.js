@@ -21,14 +21,16 @@ export default function Form(props) {
   }, []);
 
   const addEvent = async (event) => {
-    //event.preventDefault();
+    event.preventDefault();
     const title = event.target.title.value;
     const description = event.target.description.value;
     const time = event.target.time.value;
     const participants = selected.map((x) => x.value);
     const date = props.date;
+    const id = props.id;
     const res = await fetch("/addEvent", {
       body: JSON.stringify({
+        id,
         title,
         description,
         date,
@@ -59,7 +61,11 @@ export default function Form(props) {
             <h1>Add new event</h1>
           </div>
           <div className={styles.form}>
-            <form className="ui form" onSubmit={addEvent}>
+            <form
+              className="ui form"
+              onSubmitCapture={addEvent}
+              onSubmit={props.onClose}
+            >
               <br />
               <div>
                 <label className={styles.label}>Title: </label>

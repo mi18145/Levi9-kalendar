@@ -25,6 +25,10 @@ app.prepare().then(() => {
     );
   });
 
+  server.get("/getEvent/:id", (req, res) => {
+    res.send(dbEvents.filter((event) => event.id == req.params.id));
+  });
+
   server.get("/participants", (req, res) => {
     if (req.query.search)
       res.send(

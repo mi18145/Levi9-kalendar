@@ -7,8 +7,7 @@ export default function Events() {
 
   return (
     <div>
-      {id}
-      <Event />
+      <Event event_id={id} />
     </div>
   );
 }

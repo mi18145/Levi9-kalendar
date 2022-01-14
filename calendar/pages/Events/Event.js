@@ -11,6 +11,19 @@ export default function Event(props) {
     time: "",
     participants: [],
   });
+
+  const [participants, setParticipants] = useState([]);
+  useEffect(() => {
+    if (props.event_id != undefined) {
+      async function getParticipants() {
+        const res = await fetch("/participants");
+        const data = await res.json();
+        setParticipants(data.map((u) => ({ label: u.name, value: u.id })));
+      }
+      getParticipants();
+    }
+  }, [props.event_id]);
+
   useEffect(() => {
     async function getEvents() {
       if (props.event_id != undefined) {
@@ -24,13 +37,28 @@ export default function Event(props) {
 
   return (
     <>
-      <div className="ui inverted grey very padded text container segment">
-        <h2 className="ui centered header">{event.title}</h2>
-        <label>Description:</label>
-        <div className="ui text container tight segment">
-          <p>{event.description}</p>
+      <div className={styles.center}>
+        <div className={styles.container}>
+          <h2 className="ui inverted centered header">
+            {event.date} - {event.time} : {event.title}
+          </h2>
+          <label className={styles.label}>Description:</label>
+          <div className="ui container segment">
+            <p>{event.description}</p>
+          </div>
+          <label className={styles.label}>Participants:</label>
+          <div className="ui container segment">
+            <p>
+              {event.participants
+                .map((index) => {
+                  if (participants[index - 1] != undefined) {
+                    return participants[index - 1].label;
+                  }
+                })
+                .join(", ")}
+            </p>
+          </div>
         </div>
-        <p></p>
       </div>
     </>
   );

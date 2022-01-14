@@ -25,7 +25,6 @@ export default function Calendar() {
         ? 1
         : events[events.length - 1].id + 1
     );
-    console.log(router.pathname);
     //console.log(date);
   };
 

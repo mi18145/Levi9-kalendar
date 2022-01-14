@@ -94,21 +94,5 @@
     "date": "12-1-2022",
     "time": "10am",
     "participants": [3, 4]
-  },
-  {
-    "id": 13,
-    "title": "Event 222",
-    "description": "????",
-    "date": "13-1-2022",
-    "time": "12:34am",
-    "participants": [1, 2, 3, 4, 5, 6]
-  },
-  {
-    "id": 14,
-    "title": "Event 14",
-    "description": "Koristimo id sad",
-    "date": "14-1-2022",
-    "time": "12:30pm",
-    "participants": [1, 2, 3, 4, 5, 6]
   }
 ]

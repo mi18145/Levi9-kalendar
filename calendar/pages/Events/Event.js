@@ -18,7 +18,7 @@ export default function Event(props) {
       async function getParticipants() {
         const res = await fetch("/participants");
         const data = await res.json();
-        setParticipants(data.map((u) => ({ label: u.name, value: u.id })));
+        setParticipants(data.map((u) => u.name));
       }
       getParticipants();
     }
@@ -35,13 +35,31 @@ export default function Event(props) {
     getEvents();
   }, [props.event_id]);
 
+  const deleteEvent = async (ev) => {
+    ev.preventDefault();
+    const res = await fetch("/deleteEvent", {
+      body: JSON.stringify(event),
+      headers: {
+        "Content-Type": "application/json",
+      },
+      method: "POST",
+    });
+
+    const result = await res.json();
+  };
+
   return (
     <>
       <div className={styles.center}>
         <div className={styles.container}>
-          <h2 className="ui inverted centered header">
-            {event.date} - {event.time} : {event.title}
+          <h2 className={styles.bold + " ui inverted centered dividing header"}>
+            {event.title}
           </h2>
+          <h3 className={styles.header + " ui inverted centered  header"}>
+            Date: {event.date}
+            <br />
+            Time: {event.time}
+          </h3>
           <label className={styles.label}>Description:</label>
           <div className="ui container segment">
             <p>{event.description}</p>
@@ -52,12 +70,18 @@ export default function Event(props) {
               {event.participants
                 .map((index) => {
                   if (participants[index - 1] != undefined) {
-                    return participants[index - 1].label;
+                    return participants[index - 1];
                   }
                 })
                 .join(", ")}
             </p>
           </div>
+          <button
+            className="negative ui right floated button"
+            onClick={deleteEvent}
+          >
+            Delete event
+          </button>
         </div>
       </div>
     </>

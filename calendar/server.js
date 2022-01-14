@@ -45,6 +45,12 @@ app.prepare().then(() => {
     fs.writeFile("./events.json", JSON.stringify(dbEvents), "utf8");
   });
 
+  server.post("/deleteEvent", (req, res) => {
+    dbEvents.splice(dbEvents.indexOf(req.body.event), 1);
+    res.json(req.body);
+    fs.writeFile("./events.json", JSON.stringify(dbEvents), "utf8");
+  });
+
   server.all("*", (req, res) => {
     return handle(req, res);
   });

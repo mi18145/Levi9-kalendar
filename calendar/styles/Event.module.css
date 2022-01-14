@@ -1,4 +1,5 @@
 .container {
+  width: 50%;
   background-color: gray;
   margin-top: 5%;
   padding: 20px;
@@ -11,4 +12,10 @@
 }
 .label {
   color: white;
+}
+.header {
+  text-decoration: underline;
+}
+.bold {
+  font-weight: bolder;
 }

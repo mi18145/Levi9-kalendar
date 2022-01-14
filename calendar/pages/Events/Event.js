@@ -1,4 +1,5 @@
 import { React, useState, useEffect } from "react";
+import { useRouter } from "next/router";
 import "semantic-ui-css/semantic.min.css";
 import styles from "../../styles/Event.module.css";
 
@@ -11,8 +12,8 @@ export default function Event(props) {
     time: "",
     participants: [],
   });
-
   const [participants, setParticipants] = useState([]);
+
   useEffect(() => {
     if (props.event_id != undefined) {
       async function getParticipants() {
@@ -35,10 +36,11 @@ export default function Event(props) {
     getEvents();
   }, [props.event_id]);
 
-  const deleteEvent = async (ev) => {
-    ev.preventDefault();
+  const router = useRouter();
+
+  const deleteEvent = async () => {
     const res = await fetch("/deleteEvent", {
-      body: JSON.stringify(event),
+      body: JSON.stringify({ id: event.id }),
       headers: {
         "Content-Type": "application/json",
       },
@@ -46,6 +48,7 @@ export default function Event(props) {
     });
 
     const result = await res.json();
+    router.push("/");
   };
 
   return (

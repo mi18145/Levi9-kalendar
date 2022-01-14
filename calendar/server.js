@@ -46,8 +46,13 @@ app.prepare().then(() => {
   });
 
   server.post("/deleteEvent", (req, res) => {
-    dbEvents.splice(dbEvents.indexOf(req.body.event), 1);
-    res.json(req.body);
+    if (req.body.id != 0) {
+      const index = dbEvents.map((ev) => ev.id).indexOf(req.body.id);
+      if (index != -1) {
+        res.json(req.body);
+        dbEvents.splice(index, 1);
+      }
+    }
     fs.writeFile("./events.json", JSON.stringify(dbEvents), "utf8");
   });
 

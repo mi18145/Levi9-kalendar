@@ -97,15 +97,15 @@ export default function Calendar() {
                             {Object.values(checkForEvents(col.date)).map(
                               (ev) => {
                                 return (
-                                  <Link key={ev.id} href={`/Events/${ev.id}`}>
-                                    <p
-                                      onClick={() => router.push("/Events")}
-                                      key={"p" + ev.id}
-                                      className={styles.p}
-                                    >
-                                      {ev.title + " - time: " + ev.time}
-                                    </p>
-                                  </Link>
+                                  <p
+                                    onClick={() =>
+                                      router.push(`/Events/${ev.id}`)
+                                    }
+                                    key={"p" + ev.id}
+                                    className={styles.p}
+                                  >
+                                    {ev.title + " - time: " + ev.time}
+                                  </p>
                                 );
                               }
                             )}
@@ -132,15 +132,15 @@ export default function Calendar() {
                           <div>
                             {checkForEvents(col.date).map((ev) => {
                               return (
-                                <Link href={`/Events/${ev.id}`} key={ev.id}>
-                                  <p
-                                    onClick={() => router.push("/Events")}
-                                    key={"p" + ev.id}
-                                    className={styles.p}
-                                  >
-                                    {ev.title + " - time: " + ev.time}
-                                  </p>
-                                </Link>
+                                <p
+                                  onClick={() =>
+                                    router.push(`/Events/${ev.id}`)
+                                  }
+                                  key={"p" + ev.id}
+                                  className={styles.p}
+                                >
+                                  {ev.title + " - time: " + ev.time}
+                                </p>
                               );
                             })}
                           </div>

@@ -37,7 +37,7 @@ app.prepare().then(() => {
   server.post("/addEvent", (req, res) => {
     dbEvents.push(req.body);
     res.json(req.body);
-    fs.writeFile("./events.json", JSON.stringify(dbEvents), "utf8");
+    fs.writeFile("./events.json", JSON.stringify(dbEvents, null, 1), "utf8");
   });
 
   server.post("/deleteEvent", (req, res) => {
@@ -48,7 +48,7 @@ app.prepare().then(() => {
         dbEvents.splice(index, 1);
       }
     }
-    fs.writeFile("./events.json", JSON.stringify(dbEvents), "utf8");
+    fs.writeFile("./events.json", JSON.stringify(dbEvents, null, 1), "utf8");
   });
 
   server.all("*", (req, res) => {

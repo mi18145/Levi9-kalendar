@@ -29,6 +29,9 @@
 }
 
 .today {
+  align-content: top;
+  height: 100px;
+  width: 10%;
   background-color: rgb(143, 143, 143);
 }
 

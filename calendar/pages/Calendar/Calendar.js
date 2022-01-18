@@ -104,7 +104,7 @@ export default function Calendar() {
                                     key={"p" + ev.id}
                                     className={styles.p}
                                   >
-                                    {ev.time + ": " + ev.title}
+                                    {ev.time + " – " + ev.title}
                                   </p>
                                 );
                               }
@@ -139,7 +139,7 @@ export default function Calendar() {
                                   key={"p" + ev.id}
                                   className={styles.p}
                                 >
-                                  {ev.time + ": " + ev.title}
+                                  {ev.time + " – " + ev.title}
                                 </p>
                               );
                             })}

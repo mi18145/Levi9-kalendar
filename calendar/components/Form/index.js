@@ -11,6 +11,10 @@ export default function Form(props) {
   const [participants, setParticipants] = useState([]);
   const [selected, setSelected] = useState([]);
 
+  const [title, setTitle] = useState("");
+  const [desc, setDesc] = useState("");
+  const [time, setTime] = useState("");
+
   useEffect(() => {
     async function getParticipants() {
       const res = await fetch("/participants");
@@ -20,11 +24,52 @@ export default function Form(props) {
     getParticipants();
   }, []);
 
+  const validateForm = () => {
+    let isValid = true;
+
+    if (title == "") {
+      document.getElementById("title_val").removeAttribute("hidden");
+      isValid = false;
+    } else if (!document.getElementById("title_val").hasAttribute("hidden")) {
+      document.getElementById("title_val").setAttribute("hidden", "");
+    }
+
+    if (desc == "") {
+      document.getElementById("desc_val").removeAttribute("hidden");
+      isValid = false;
+    } else if (!document.getElementById("desc_val").hasAttribute("hidden")) {
+      document.getElementById("desc_val").setAttribute("hidden", "");
+    }
+
+    const expression = /^([01]?[0-9]|2[0-3]):[0-5][0-9](am|AM|pm|PM)?$/;
+    const regex = new RegExp(expression);
+
+    if (!time.match(regex)) {
+      document.getElementById("time_val").removeAttribute("hidden");
+      isValid = false;
+    } else if (!document.getElementById("time_val").hasAttribute("hidden")) {
+      document.getElementById("time_val").setAttribute("hidden", "");
+    }
+
+    if (selected.length == 0) {
+      document.getElementById("participants_val").removeAttribute("hidden");
+      isValid = false;
+    } else if (
+      !document.getElementById("participants_val").hasAttribute("hidden")
+    ) {
+      document.getElementById("participants_val").setAttribute("hidden", "");
+    }
+
+    return isValid;
+  };
+
   const addEvent = async (event) => {
     event.preventDefault();
-    const title = event.target.title.value;
-    const description = event.target.description.value;
-    const time = event.target.time.value;
+
+    if (!validateForm()) {
+      return false;
+    }
+
     const participants = selected.map((x) => x.value);
     const date = props.date;
     const id = props.id;
@@ -32,7 +77,7 @@ export default function Form(props) {
       body: JSON.stringify({
         id,
         title,
-        description,
+        description: desc,
         date,
         time,
         participants,
@@ -44,11 +89,9 @@ export default function Form(props) {
     });
 
     const result = await res.json();
+    return true;
   };
 
-  const [title, setTitle] = useState("");
-  const [desc, setDesc] = useState("");
-  const [time, setTime] = useState("");
   return (
     <>
       <div onClick={props.onClose} className={styles.center}>
@@ -63,44 +106,67 @@ export default function Form(props) {
           <div className={styles.form}>
             <form
               className="ui form"
-              onSubmitCapture={addEvent}
-              onSubmit={props.onClose}
+              onSubmit={async (ev) => {
+                if (await addEvent(ev)) {
+                  props.onClose();
+                }
+              }}
             >
               <br />
               <div>
+                <label id="title_val" className={styles.required} hidden>
+                  This field is required!
+                </label>
+                <br />
                 <label className={styles.label}>Title: </label>
                 <input
                   type="text"
                   placeholder="Type title here..."
                   name="title"
                   id="title"
+                  value={title}
                   onChange={(e) => setTitle(e.target.value)}
                 />
               </div>
               <br />
               <div>
+                <label id="desc_val" className={styles.required} hidden>
+                  This field is required!
+                </label>
+                <br />
                 <label className={styles.label}>Description: </label>
                 <textarea
                   type="text"
                   placeholder="Type description here..."
                   name="description"
                   id="description"
+                  value={desc}
                   onChange={(e) => setDesc(e.target.value)}
                 ></textarea>
               </div>
               <br />
               <div>
+                <label id="time_val" className={styles.required} hidden>
+                  This field is required and should be formated like xx:xx (can
+                  be followed by am/pm)!
+                </label>
+                <br />
                 <label className={styles.label}>Time: </label>
                 <input
                   type="text"
                   placeholder={props.date}
                   name="time"
                   id="time"
+                  value={time}
                   onChange={(e) => setTime(e.target.value)}
                 />
               </div>
               <br />
               <div>
+                <label id="participants_val" className={styles.required} hidden>
+                  This field is required!
+                </label>
+                <br />
                 <label className={styles.label}>Choose participants: </label>
                 <MultiSelect
                   options={participants}

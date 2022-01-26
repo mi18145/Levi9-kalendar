@@ -3,9 +3,12 @@ import { useRouter } from "next/router";
 import "semantic-ui-css/semantic.min.css";
 import styles from "../../styles/Event.module.css";
 
-export default function Event(props) {
+export default function Event() {
+  const router = useRouter();
+  const { id } = router.query;
+
   const [event, setEvent] = useState({
-    id: 0,
+    id: id,
     title: "",
     description: "",
     date: "",
@@ -15,7 +18,7 @@ export default function Event(props) {
   const [participants, setParticipants] = useState([]);
 
   useEffect(() => {
-    if (props.event_id != undefined) {
+    if (id != undefined) {
       async function getParticipants() {
         const res = await fetch("/participants");
         const data = await res.json();
@@ -23,20 +26,18 @@ export default function Event(props) {
       }
       getParticipants();
     }
-  }, [props.event_id]);
+  }, [id]);
 
   useEffect(() => {
     async function getEvents() {
-      if (props.event_id != undefined) {
-        const res = await fetch(`/getEvent/${props.event_id}`);
+      if (id != undefined) {
+        const res = await fetch(`/getEvent/${id}`);
         const data = await res.json();
-        setEvent(...data);
+        setEvent(data);
       }
     }
     getEvents();
-  }, [props.event_id]);
-
-  const router = useRouter();
+  }, [id]);
 
   const deleteEvent = async () => {
     const res = await fetch("/deleteEvent", {

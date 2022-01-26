@@ -3,9 +3,14 @@ const next = require("next");
 const bodyparser = require("body-parser");
 const fs = require("fs");
 
-const dbEvents = require("./events.json");
+const mongoose = require("mongoose");
+mongoose.connect("mongodb://localhost:27017/EventsDB", {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+});
 
-const dbParticipants = require("./participants.json").Participants;
+const EventModel = require("./models/Event");
+const ParticipantModel = require("./models/Participant");
 
 const port = parseInt(process.env.PORT, 10) || 3000;
 const dev = process.env.NODE_ENV !== "production";
@@ -16,39 +21,26 @@ app.prepare().then(() => {
   const server = express();
   server.use(bodyparser.json());
 
-  server.get("/getEvents", (req, res) => {
-    res.send(dbEvents);
+  server.get("/getEvents", async (req, res) => {
+    res.send(await EventModel.find().exec());
   });
 
-  server.get("/getEvent/:id", (req, res) => {
-    res.send(dbEvents.filter((event) => event.id == req.params.id));
+  server.get("/getEvent/:id", async (req, res) => {
+    res.send(await EventModel.findOne({ id: parseInt(req.params.id) }).exec());
   });
 
-  server.get("/participants", (req, res) => {
-    if (req.query.search)
-      res.send(
-        dbParticipants.filter((participant) =>
-          participant.name.startsWith(req.query.search)
-        )
-      );
-    else res.send(dbParticipants);
+  server.get("/participants", async (req, res) => {
+    res.send(await ParticipantModel.find().exec());
   });
 
   server.post("/addEvent", (req, res) => {
-    dbEvents.push(req.body);
     res.json(req.body);
-    fs.writeFile("./events.json", JSON.stringify(dbEvents, null, 1), "utf8");
+    EventModel.create(req.body);
   });
 
   server.post("/deleteEvent", (req, res) => {
-    if (req.body.id != 0) {
-      const index = dbEvents.map((ev) => ev.id).indexOf(req.body.id);
-      if (index != -1) {
-        res.json(req.body);
-        dbEvents.splice(index, 1);
-      }
-    }
-    fs.writeFile("./events.json", JSON.stringify(dbEvents, null, 1), "utf8");
+    EventModel.deleteOne({ id: parseInt(req.body.id) }).exec();
+    res.json(req.body);
   });
 
   server.all("*", (req, res) => {

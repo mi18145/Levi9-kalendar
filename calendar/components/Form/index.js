@@ -67,7 +67,7 @@ export default function Form(props) {
     event.preventDefault();
 
     if (!validateForm()) {
-      return false;
+      return;
     }
 
     const participants = selected.map((x) => x.value);
@@ -89,7 +89,7 @@ export default function Form(props) {
     });
 
     const result = await res.json();
-    return true;
+    props.onClose();
   };
 
   return (
@@ -104,14 +104,7 @@ export default function Form(props) {
             <h1>Add new event</h1>
           </div>
           <div className={styles.form}>
-            <form
-              className="ui form"
-              onSubmit={async (ev) => {
-                if (await addEvent(ev)) {
-                  props.onClose();
-                }
-              }}
-            >
+            <form className="ui form" onSubmit={addEvent}>
               <br />
               <div>
                 <label id="title_val" className={styles.required} hidden>

@@ -2,7 +2,7 @@ import { React, Fragment, useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import Form from "../Form";
 import "semantic-ui-css/semantic.min.css";
-import styles from "../../styles/Calendar.module.css";
+import styles from "./Calendar.module.css";
 
 export default function Calendar() {
   //start of useCalendar
@@ -158,7 +158,12 @@ export default function Calendar() {
 
   useEffect(() => {
     async function getEvents() {
-      const res = await fetch("/getEvents");
+      const res = await fetch("/event", {
+        headers: {
+          "Content-Type": "application/json",
+        },
+        method: "GET",
+      });
       const data = await res.json();
       setEvents([...data]);
     }

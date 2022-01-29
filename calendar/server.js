@@ -21,11 +21,7 @@ app.prepare().then(() => {
   const server = express();
   server.use(bodyparser.json());
 
-  server.get("/getEvents", async (req, res) => {
-    res.send(await EventModel.find().exec());
-  });
-
-  server.get("/getEvent/:id", async (req, res) => {
+  server.get("/getEventById/:id", async (req, res) => {
     res.send(await EventModel.findOne({ id: parseInt(req.params.id) }).exec());
   });
 
@@ -33,14 +29,26 @@ app.prepare().then(() => {
     res.send(await ParticipantModel.find().exec());
   });
 
-  server.post("/addEvent", (req, res) => {
-    res.json(req.body);
-    EventModel.create(req.body);
-  });
-
-  server.post("/deleteEvent", (req, res) => {
-    EventModel.deleteOne({ id: parseInt(req.body.id) }).exec();
-    res.json(req.body);
+  server.all("/event", async (req, res) => {
+    switch (req.method) {
+      case "POST":
+        {
+          res.json(req.body);
+          EventModel.create(req.body);
+        }
+        break;
+      case "DELETE":
+        {
+          EventModel.deleteOne({ id: parseInt(req.body.id) }).exec();
+          res.json(req.body);
+        }
+        break;
+      case "GET":
+        {
+          res.send(await EventModel.find().exec());
+        }
+        break;
+    }
   });
 
   server.all("*", (req, res) => {

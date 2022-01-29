@@ -1,6 +1,6 @@
 import { React, useState, useEffect } from "react";
 import "semantic-ui-css/semantic.min.css";
-import styles from "../../styles/Form.module.css";
+import styles from "./Form.module.css";
 import { MultiSelect } from "react-multi-select-component";
 
 export default function Form(props) {
@@ -15,6 +15,11 @@ export default function Form(props) {
   const [desc, setDesc] = useState("");
   const [time, setTime] = useState("");
 
+  const [titleVal, setTitleVal] = useState(false);
+  const [descVal, setDescVal] = useState(false);
+  const [timeVal, setTimeVal] = useState(false);
+  const [selectedVal, setSelectedVal] = useState(false);
+
   useEffect(() => {
     async function getParticipants() {
       const res = await fetch("/participants");
@@ -28,36 +33,34 @@ export default function Form(props) {
     let isValid = true;
 
     if (title == "") {
-      document.getElementById("title_val").removeAttribute("hidden");
+      setTitleVal(true);
       isValid = false;
-    } else if (!document.getElementById("title_val").hasAttribute("hidden")) {
-      document.getElementById("title_val").setAttribute("hidden", "");
+    } else {
+      setTitle(false);
     }
 
     if (desc == "") {
-      document.getElementById("desc_val").removeAttribute("hidden");
+      setDescVal(true);
       isValid = false;
-    } else if (!document.getElementById("desc_val").hasAttribute("hidden")) {
-      document.getElementById("desc_val").setAttribute("hidden", "");
+    } else {
+      setDescVal(false);
     }
 
     const expression = /^([01]?[0-9]|2[0-3]):[0-5][0-9](am|AM|pm|PM)?$/;
     const regex = new RegExp(expression);
 
     if (!time.match(regex)) {
-      document.getElementById("time_val").removeAttribute("hidden");
+      setTimeVal(true);
       isValid = false;
-    } else if (!document.getElementById("time_val").hasAttribute("hidden")) {
-      document.getElementById("time_val").setAttribute("hidden", "");
+    } else {
+      setTimeVal(false);
     }
 
     if (selected.length == 0) {
-      document.getElementById("participants_val").removeAttribute("hidden");
+      setSelectedVal(true);
       isValid = false;
-    } else if (
-      !document.getElementById("participants_val").hasAttribute("hidden")
-    ) {
-      document.getElementById("participants_val").setAttribute("hidden", "");
+    } else {
+      setSelectedVal(false);
     }
 
     return isValid;
@@ -73,7 +76,7 @@ export default function Form(props) {
     const participants = selected.map((x) => x.value);
     const date = props.date;
     const id = props.id;
-    const res = await fetch("/addEvent", {
+    const res = await fetch("/event", {
       body: JSON.stringify({
         id,
         title,
@@ -107,9 +110,11 @@ export default function Form(props) {
             <form className="ui form" onSubmit={addEvent}>
               <br />
               <div>
-                <label id="title_val" className={styles.required} hidden>
-                  This field is required!
-                </label>
+                {titleVal ? (
+                  <label className={styles.required}>
+                    This field is required!
+                  </label>
+                ) : null}
                 <br />
                 <label className={styles.label}>Title: </label>
                 <input
@@ -123,9 +128,11 @@ export default function Form(props) {
               </div>
               <br />
               <div>
-                <label id="desc_val" className={styles.required} hidden>
-                  This field is required!
-                </label>
+                {descVal ? (
+                  <label className={styles.required}>
+                    This field is required!
+                  </label>
+                ) : null}
                 <br />
                 <label className={styles.label}>Description: </label>
                 <textarea
@@ -139,10 +146,12 @@ export default function Form(props) {
               </div>
               <br />
               <div>
-                <label id="time_val" className={styles.required} hidden>
-                  This field is required and should be formated like xx:xx (can
-                  be followed by am/pm)!
-                </label>
+                {timeVal ? (
+                  <label className={styles.required}>
+                    This field is required and should be formated like xx:xx
+                    (can be followed by am/pm)!
+                  </label>
+                ) : null}
                 <br />
                 <label className={styles.label}>Time: </label>
                 <input
@@ -156,9 +165,11 @@ export default function Form(props) {
               </div>
               <br />
               <div>
-                <label id="participants_val" className={styles.required} hidden>
-                  This field is required!
-                </label>
+                {selectedVal ? (
+                  <label id="participants_val" className={styles.required}>
+                    This field is required!
+                  </label>
+                ) : null}
                 <br />
                 <label className={styles.label}>Choose participants: </label>
                 <MultiSelect

@@ -1,7 +1,7 @@
 import { React, useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import "semantic-ui-css/semantic.min.css";
-import styles from "../../styles/Event.module.css";
+import styles from "./Event.module.css";
 
 export default function Event(params) {
   const router = useRouter();
@@ -29,7 +29,7 @@ export default function Event(params) {
   useEffect(() => {
     async function getEvents() {
       if (params.event_id != undefined) {
-        const res = await fetch(`/getEvent/${params.event_id}`);
+        const res = await fetch(`/getEventById/${params.event_id}`);
         const data = await res.json();
         setEvent(data);
       }
@@ -38,12 +38,12 @@ export default function Event(params) {
   }, [params.event_id]);
 
   const deleteEvent = async () => {
-    const res = await fetch("/deleteEvent", {
+    const res = await fetch("/event", {
       body: JSON.stringify({ id: event.id }),
       headers: {
         "Content-Type": "application/json",
       },
-      method: "POST",
+      method: "DELETE",
     });
 
     const result = await res.json();

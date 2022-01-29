@@ -220,20 +220,18 @@ export default function Calendar() {
                               {col.value}
                             </h5>
                           </div>
-                          <div>
-                            {Object.values(checkForEvents(col.date)).map(
-                              (ev) => {
-                                return (
-                                  <a
-                                    href={`/Events/${ev.id}`}
-                                    key={ev.id}
-                                    className={styles.a}
-                                  >
-                                    {ev.time + " – " + ev.title}
-                                  </a>
-                                );
-                              }
-                            )}
+                          <div className={styles.a_div}>
+                            {checkForEvents(col.date).map((ev) => {
+                              return (
+                                <a
+                                  href={`/Events/${ev.id}`}
+                                  key={ev.id}
+                                  className={styles.a}
+                                >
+                                  {ev.time + " – " + ev.title}
+                                </a>
+                              );
+                            })}
                           </div>
                         </div>
                       </td>
@@ -293,7 +291,7 @@ export default function Calendar() {
           </button>
         </div>
       </div>
-      <div className={styles.form}>
+      <div>
         <Form
           show={show}
           date={date}

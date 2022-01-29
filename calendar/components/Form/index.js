@@ -31,12 +31,11 @@ export default function Form(props) {
 
   const validateForm = () => {
     let isValid = true;
-
     if (title == "") {
       setTitleVal(true);
       isValid = false;
     } else {
-      setTitle(false);
+      setTitleVal(false);
     }
 
     if (desc == "") {

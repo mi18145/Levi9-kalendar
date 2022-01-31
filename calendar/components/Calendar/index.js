@@ -4,7 +4,7 @@ import Form from "../Form";
 import "semantic-ui-css/semantic.min.css";
 import styles from "./Calendar.module.css";
 
-export default function Calendar() {
+export default function Calendar(props) {
   //start of useCalendar
   const daysShort = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
 
@@ -139,22 +139,18 @@ export default function Calendar() {
   };
   // end of useCalendar
 
+  const [events, setEvents] = useState([]);
+  const router = useRouter();
+
   const dateClickHandler = (date) => {
-    setDate(date);
-    setShow(true);
-    setId(
+    props.onDateChange(date);
+    props.onShowChange(true);
+    props.onIdChange(
       events[events.length - 1].id == undefined
         ? 1
         : events[events.length - 1].id + 1
     );
-    //console.log(date);
   };
-
-  const [show, setShow] = useState(false);
-  const [date, setDate] = useState("1");
-  const [id, setId] = useState(1);
-  const [events, setEvents] = useState([]);
-  const router = useRouter();
 
   useEffect(() => {
     async function getEvents() {
@@ -168,7 +164,7 @@ export default function Calendar() {
       setEvents([...data]);
     }
     getEvents();
-  }, [show]);
+  }, [props.show]);
 
   const checkForEvents = (date) => {
     const event_list = [];
@@ -220,7 +216,7 @@ export default function Calendar() {
                               {col.value}
                             </h5>
                           </div>
-                          <div className={styles.a_div}>
+                          <div>
                             {checkForEvents(col.date).map((ev) => {
                               return (
                                 <a
@@ -228,7 +224,9 @@ export default function Calendar() {
                                   key={ev.id}
                                   className={styles.a}
                                 >
-                                  {ev.time + " – " + ev.title}
+                                  <div className={styles.a_div}>
+                                    {ev.time + " – " + ev.title}
+                                  </div>
                                 </a>
                               );
                             })}
@@ -252,7 +250,7 @@ export default function Calendar() {
                               {col.value}
                             </h5>
                           </div>
-                          <div className={styles.a_div}>
+                          <div>
                             {checkForEvents(col.date).map((ev) => {
                               return (
                                 <a
@@ -260,7 +258,9 @@ export default function Calendar() {
                                   key={ev.id}
                                   className={styles.a}
                                 >
-                                  {ev.time + " – " + ev.title}
+                                  <div className={styles.a_div}>
+                                    {ev.time + " – " + ev.title}
+                                  </div>
                                 </a>
                               );
                             })}
@@ -290,15 +290,6 @@ export default function Calendar() {
             Next
           </button>
         </div>
-      </div>
-      <div>
-        <Form
-          show={show}
-          date={date}
-          id={id}
-          onClose={() => setShow(false)}
-          //onSubmit={() => setShow(false)}
-        />
       </div>
     </>
   );

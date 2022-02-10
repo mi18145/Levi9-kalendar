@@ -29,26 +29,18 @@ app.prepare().then(() => {
     res.send(await ParticipantModel.find().exec());
   });
 
-  server.all("/event", async (req, res) => {
-    switch (req.method) {
-      case "POST":
-        {
-          res.json(req.body);
-          EventModel.create(req.body);
-        }
-        break;
-      case "DELETE":
-        {
-          EventModel.deleteOne({ id: parseInt(req.body.id) }).exec();
-          res.json(req.body);
-        }
-        break;
-      case "GET":
-        {
-          res.send(await EventModel.find().exec());
-        }
-        break;
-    }
+  server.get("/event", async (req, res) => {
+    res.send(await EventModel.find().exec());
+  });
+
+  server.post("/event", async (req, res) => {
+    res.json(req.body);
+    EventModel.create(req.body);
+  });
+
+  server.delete("/event", async (req, res) => {
+    EventModel.deleteOne({ id: parseInt(req.body.id) }).exec();
+    res.json(req.body);
   });
 
   server.all("*", (req, res) => {
